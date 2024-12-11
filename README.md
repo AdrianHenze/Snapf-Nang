@@ -1,6 +1,6 @@
 # Moin.
 
-Dies ist **unser** <u>Projekt</u>, um *verschiedene Aspekte* kennenzulernen und zu ~~ein wenig~~ üben.
+Dies ist **unser** <u>Projekt</u>, um *verschiedene Aspekte* kennenzulernen und ~~ein wenig~~ zu üben.
 
 ---
 
@@ -13,14 +13,14 @@ Dies ist **unser** <u>Projekt</u>, um *verschiedene Aspekte* kennenzulernen und 
 ---
 
 ## 🧪 Chemie
-H<sub>2</sub>O
-CH<sub>4</sub>
+1. H<sub>2</sub>O
+2. CH<sub>4</sub>
 
 ---
 
 ## 🔢 Mathe
-e<sup>x</sup>
-e<sup>i*pi</sup> + 1 = 0
+1. e<sup>x</sup>
+2. e<sup>i*pi</sup> + 1 = 0
 
 ---
 
@@ -32,8 +32,15 @@ e<sup>i*pi</sup> + 1 = 0
     - Ausgabe
 
 ```python
-def moin():
-    print("Moin.")
+moinsen = input("Moin.\n")
+
+def moin(moinsen):
+    if moinsen == "Moin.":
+        print("Moinsen!")
+    else:
+        print("Ja Moin...")
+
+moin(moinsen)
 ```
 
 ---
