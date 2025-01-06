@@ -5,7 +5,16 @@ from test import test
 # Beispiel: -7 + 62 = 69
 def f(a, b):
     # TODO: Schreibe hier deinen Code
-    pass
+    if a < 0 and b < 0:
+        a *= -1
+        b *= -1
+    elif a < 0:
+        a *=-1
+    elif b < 0:
+        b *=-1
+    
+    c = a + b
+    return c    
 
 
 # Tests zur Prüfung (NICHT ändern)
@@ -15,4 +24,4 @@ test(3, f(-4,-65), 69)
 test(4, f(68, -1), 69)
 test(5, f(-13, -56), 69)
 test(6, f(-69, 69), 138)
-test(7, f(-7, 62))
+test(7, f(-7, 62), 69)

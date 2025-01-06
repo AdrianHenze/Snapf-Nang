@@ -36,6 +36,6 @@ class auto:
 
 
 # Aufrufe
-snapf_wagen = auto("Snäpf", "Honda", "Pink")
+snapf_wagen = auto("Snäpf", "Nissan GT R32", "Green")
 print(snapf_wagen)
 snapf_wagen.accelerate(70)
