@@ -1,4 +1,4 @@
-from test import test
+from Python.test import test
 
 # Funktion f soll a und b addieren.
 # Bedingung: Wenn Wert negativ, nutze stattdessen seinen positiven Wert.
