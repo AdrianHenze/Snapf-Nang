@@ -1,173 +1,166 @@
+// 1a)
 class PriorityHeap {
     private final int[] heap;
     private final boolean isMaxHeap;
-    private int size; // Anzahl gespeicherter Elemente
+    private int numOfElements;
 
     public PriorityHeap(boolean isMaxHeap, int capacity) {
         this.isMaxHeap = isMaxHeap;
         this.heap = new int[capacity];
-        this.size = 0;
+        this.numOfElements = 0;
     }
 
-    public int numberOfElements() {
-        return size;
-    }
 
+    // Schlusslicht einfügen.
     public void insert(int value) {
-        if (size == heap.length) {
-            throw new IllegalStateException("Heap ist voll!");
-        }
-        // Einfügen am Ende
-        heap[size] = value;
-        // Nach oben heapify
-        heapifyUp(size);
-        size++;
+        heap[numOfElements] = value;
+        heapifyUp(numOfElements);
+        numOfElements++;
     }
 
-    public int peek() {
-        if (size == 0) {
-            throw new IllegalStateException("Heap ist leer!");
+
+    // Sorge dafür, dass der Parent dem Heap entsprechend ist.
+    private void heapifyUp(int i) {
+        int parent = (i - 1) / 2;
+        while (i > 0 && compare(heap[i], heap[parent])) {
+            swap(i, parent);
+            i = parent;
+            parent = (i - 1) / 2;
         }
-        return heap[0];
     }
 
+
+    // Oberstes Element zurückgeben und entfernen.
     public int extractTop() {
-        if (size == 0) {
-            throw new IllegalStateException("Heap ist leer!");
-        }
         int topValue = heap[0];
-        // Letztes Element nach vorne
-        heap[0] = heap[size - 1];
-        size--;
-        // Nach unten heapify
+        heap[0] = heap[numOfElements - 1];
+        numOfElements--;
         heapifyDown(0);
         return topValue;
     }
 
-    private void heapifyUp(int index) {
-        int parent = (index - 1) / 2;
-        while (index > 0 && compare(heap[index], heap[parent])) {
-            swap(index, parent);
-            index = parent;
-            parent = (index - 1) / 2;
-        }
-    }
 
-    private void heapifyDown(int index) {
+    private void heapifyDown(int i) {
         while (true) {
-            int left = 2 * index + 1;
-            int right = 2 * index + 2;
-            int target = index;
+            int left = 2 * i + 1;
+            int right = 2 * i + 2;
+            int target = i;
 
-            // Linkes Kind
-            if (left < size && compare(heap[left], heap[target])) {
+            // Linkes und Rechtes Kind 
+            if (left < numOfElements && compare(heap[left], heap[target])) {
                 target = left;
             }
-            // Rechtes Kind
-            if (right < size && compare(heap[right], heap[target])) {
+            if (right < numOfElements && compare(heap[right], heap[target])) {
                 target = right;
             }
-            // Keine Änderung ⇒ fertig
-            if (target == index) {
+            // Unverändert
+            if (target == i) {
                 break;
             }
-            swap(index, target);
-            index = target;
+            swap(i, target);
+            i = target;
         }
     }
 
-    // Vergleich abhängig davon, ob Max- oder Min-Heap
+
     private boolean compare(int a, int b) {
-        // Max-Heap: a > b ⇒ true
-        // Min-Heap: a < b ⇒ true
+        // Max-Heap: a > b
+        // Min-Heap: a < b
         return isMaxHeap ? (a > b) : (a < b);
     }
 
+
     private void swap(int i, int j) {
-        int temp = heap[i];
+        int tmp = heap[i];
         heap[i] = heap[j];
-        heap[j] = temp;
+        heap[j] = tmp;
+    }
+
+
+    public int peek() {
+        return heap[0];
+    }
+
+
+    public int numberOfElements() {
+        return numOfElements;
     }
 }
 
 
+// 1b)
 class Median {
     private final PriorityHeap maxHeap; // untere Hälfte
     private final PriorityHeap minHeap; // obere Hälfte
-    private double currentMedian;
+    private double median;
 
     public Median(int capacity) {
-        // Kapazität je nach Bedarf für beide Heaps angeben
         this.maxHeap = new PriorityHeap(true, capacity);
         this.minHeap = new PriorityHeap(false, capacity);
-        this.currentMedian = 0.0;
+        this.median = 0.0;
     }
 
+
     public double addNumberAndCalculateMedian(int newNumber) {
-        // Sonderfall: erstes Element
+        // Beim ersten Element
         if (maxHeap.numberOfElements() == 0 && minHeap.numberOfElements() == 0) {
             maxHeap.insert(newNumber);
-            currentMedian = newNumber;
-            return currentMedian;
+            median = newNumber;
+            return median;
         }
-
-        // Falls Max-Heap größer
+        // Max-Heap größer
         if (maxHeap.numberOfElements() > minHeap.numberOfElements()) {
-            if (newNumber < currentMedian) {
-                int verschoben = maxHeap.extractTop();
-                minHeap.insert(verschoben);
+            if (newNumber < median) {
+                int resettler = maxHeap.extractTop();
+                minHeap.insert(resettler);
                 maxHeap.insert(newNumber);
             } else {
                 minHeap.insert(newNumber);
             }
-            currentMedian = (maxHeap.peek() + minHeap.peek()) / 2.0;
+            median = (maxHeap.peek() + minHeap.peek()) / 2.0;
         }
-        // Falls Min-Heap größer
+        // Min-Heap größer
         else if (maxHeap.numberOfElements() < minHeap.numberOfElements()) {
-            if (newNumber > currentMedian) {
-                int verschoben = minHeap.extractTop();
-                maxHeap.insert(verschoben);
+            if (newNumber > median) {
+                int resettler = minHeap.extractTop();
+                maxHeap.insert(resettler);
                 minHeap.insert(newNumber);
             } else {
                 maxHeap.insert(newNumber);
             }
-            currentMedian = (maxHeap.peek() + minHeap.peek()) / 2.0;
+            median = (maxHeap.peek() + minHeap.peek()) / 2.0;
         }
         // Beide gleich groß
         else {
-            if (newNumber < currentMedian) {
+            if (newNumber < median) {
                 maxHeap.insert(newNumber);
-                currentMedian = maxHeap.peek();
+                median = maxHeap.peek();
             } else {
                 minHeap.insert(newNumber);
-                currentMedian = minHeap.peek();
+                median = minHeap.peek();
             }
         }
-
-        return currentMedian;
+        return median;
     }
 }
 
 
+// 1c)
 public class TestMedian {
     public static void main(String[] args) {
-        Median medianCalculator = new Median(10);
-
         // Beispiel 1
-        int[] input1 = {5, 10, 15};
+        Median medianCalculator = new Median(10);
+        int[] nums1 = {2, 8, 12, 19, 22, 34, 49, 63};
         System.out.println("Beispiel 1:");
-        for (int num : input1) {
+        for (int num : nums1) {
             double median = medianCalculator.addNumberAndCalculateMedian(num);
             System.out.println("Eingefügt: " + num + "; Median: " + median);
         }
-
-        // Neuer Median-Rechner für Beispiel 2
-        medianCalculator = new Median(10);
-
         // Beispiel 2
-        int[] input2 = {1, 2, 3, 4};
+        medianCalculator = new Median(10);
+        int[] nums2 = {1, 4, 13, 21, 42, 69};
         System.out.println("\nBeispiel 2:");
-        for (int num : input2) {
+        for (int num : nums2) {
             double median = medianCalculator.addNumberAndCalculateMedian(num);
             System.out.println("Eingefügt: " + num + "; Median: " + median);
         }

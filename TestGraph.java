@@ -14,13 +14,12 @@ public class TestGraph {
         g.addEdge(2, 4);
 
         // DFS ausführen
-        System.out.println("== Starte DFS ==");
         g.dfs();
 
         // Nachbarn auflisten
-        System.out.println("\n== Nachbarschaftsliste ==");
+        System.out.println("\nNachbarschaftsliste");
         for (int i = 0; i < g.getNumberOfNodes(); i++) {
-            System.out.println("Knoten " + i + " → " + g.getAdjacencyList().get(i));
+            System.out.println("Knoten " + i + ": " + g.getAdjacencyList().get(i));
         }
     }
 }
@@ -29,33 +28,31 @@ public class TestGraph {
 
 // 4a)
 class Graph {
-    private List<List<Integer>> adjacencyList; // Nachbarschaftsliste
+    private List<List<Integer>> adjacencyList;  // Liste aller Nachbarschaften
     private int numberOfNodes;
 
     public Graph(int numberOfNodes) {
         this.numberOfNodes = numberOfNodes;
         adjacencyList = new ArrayList<>(numberOfNodes);
         for (int i = 0; i < numberOfNodes; i++) {
-            adjacencyList.add(new ArrayList<>());
+            adjacencyList.add(new ArrayList<>());   // jeweilige Nachbarschaftsliste
         }
     }
 
-    // Ungerichtete Kante hinzufügen
-    public void addEdge(int source, int destination) {
-        adjacencyList.get(source).add(destination);
-        adjacencyList.get(destination).add(source);
+    // Ungerichtete Kante
+    public void addEdge(int a, int b) {
+        adjacencyList.get(a).add(b);
+        adjacencyList.get(b).add(a);
     }
 
-    // Gerichtete Kante hinzufügen
-    public void addDirectedEdge(int source, int destination) {
-        adjacencyList.get(source).add(destination);
+    // Gerichtete Kante (für aufgabe 4d)
+    public void addDirectedEdge(int src, int dest) {
+        adjacencyList.get(src).add(dest);
     }
 
-    // DFS starten
     public void dfs() {
-        boolean[] visited = new boolean[numberOfNodes];
-        // Falls es mehrere nicht zusammenhängende Komponenten gibt,
-        // jedes unbesuchte Node als neuen Startpunkt
+        boolean[] visited = new boolean[numberOfNodes]; 
+        // Startet suche für unbesuchte Knoten
         for (int i = 0; i < numberOfNodes; i++) {
             if (!visited[i]) {
                 dfsRecursive(i, visited);
@@ -65,9 +62,9 @@ class Graph {
 
     // Rekursive DFS-Hilfsmethode
     private void dfsRecursive(int currentNode, boolean[] visited) {
-        visited[currentNode] = true;
-        System.out.println("Besuche Knoten: " + currentNode);
-
+        visited[currentNode] = true;    // Knoten als besucht markiert
+        System.out.println("Besuche Knoten: " + currentNode);   // Zum Prüfen
+        // Geh alle Nachbarn durch und führe gegebenfalls DFS durch
         for (int neighbor : adjacencyList.get(currentNode)) {
             if (!visited[neighbor]) {
                 dfsRecursive(neighbor, visited);
@@ -80,6 +77,7 @@ class Graph {
         return adjacencyList;
     }
 
+    // Getter für die Knotenanzahl
     public int getNumberOfNodes() {
         return numberOfNodes;
     }
@@ -91,5 +89,5 @@ class Graph {
  * DFS besucht jeden Knoten genau einmal.
  * Für jeden Knoten werden sämtliche Kanten zu Nachbarn durchlaufen.
  * Im gerichteten Graphen wird jede Kante genau einmal betrachtet.
- * DFS Tiefensuche Komplexität: O(Knotenmenge + Kantenmenge)
+ * DFS Zeitkomplexität: O(Knotenmenge + Kantenmenge)
  */
