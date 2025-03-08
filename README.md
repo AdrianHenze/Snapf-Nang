@@ -1,1 +1,3 @@
-# Snapf-Nang Bank
+# 💸 Snapf-Nang Bank
+
+Mini-Projekt mit Potenzial

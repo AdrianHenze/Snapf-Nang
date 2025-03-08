@@ -1,7 +1,9 @@
+# Snapfs Realm
+
 # TODO: Datenstruktur für Konten
 
-# TODO: Funktion für Einzahlen
+# TODO: Funktion zum Einzahlen
 
-# TODO: Funktion für Abheben
+# TODO: Funktion zum Abheben
 
 # TODO: Getter-Funktion für Kontostand
