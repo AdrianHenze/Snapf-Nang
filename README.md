@@ -1,3 +1,3 @@
 # 💸 Snapf-Nang Bank
 
-Mini-Projekt mit Potenzial
+Mini-Project with potential.
