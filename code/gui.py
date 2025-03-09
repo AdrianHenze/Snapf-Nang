@@ -2,6 +2,7 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 from code.widgets import *
+from code.button_event import *
 
 root = None
 window_width = None
@@ -144,6 +145,11 @@ def open_login_page():
     pw_label.grid(row=1, column=0, sticky="e", pady=(10,10), padx=(50,10))
     pw_entry = tk.Entry(input_frame, show="*", bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
     pw_entry.grid(row=1, column=1, sticky="w", pady=(10,10), padx=(10,50))
+    # Login
+    def login():
+        if is_valid_login(name_entry.get(), pw_entry.get()):
+            build_right_navigation()
+            open_balance_page()
     # Login Button
     style = default_button_style(root)
     default_button(input_frame, 2, "Login", login)
@@ -177,13 +183,18 @@ def open_register_page():
     pw_entry = tk.Entry(input_frame, show="*", bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
     pw_entry.grid(row=1, column=1, sticky="w", pady=(10,10), padx=(10,50))
     # Year of Birth
-    name_label = tk.Label(input_frame, text="Year of Birth:", bg=color_space_gray, fg=color_text_gray, font=("Helvetica", 24))
-    name_label.grid(row=2, column=0, sticky="e", pady=(10,10), padx=(50,10))
-    name_entry = tk.Entry(input_frame, bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
-    name_entry.grid(row=2, column=1, sticky="w", pady=(10,10), padx=(10,50))
+    year_label = tk.Label(input_frame, text="Year of Birth:", bg=color_space_gray, fg=color_text_gray, font=("Helvetica", 24))
+    year_label.grid(row=2, column=0, sticky="e", pady=(10,10), padx=(50,10))
+    year_entry = tk.Entry(input_frame, bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
+    year_entry.grid(row=2, column=1, sticky="w", pady=(10,10), padx=(10,50))
+    # Register
+    def register():
+        if is_valid_registration(name_entry.get(),pw_entry.get(),year_entry.get()):
+            build_right_navigation()
+            open_balance_page()
     # Register Button
     style = default_button_style(root)
-    default_button(input_frame, 3, "Register", login)
+    default_button(input_frame, 3, "Register", register)
     
     l_page = register_page  # Update global Reference
 
@@ -204,7 +215,8 @@ def open_balance_page():
     input_frame.place(relx=0.5, rely=0.5, anchor="center")
     input_frame.pack_propagate(False)
     # Amount
-    amount_label = tk.Label(input_frame, text="0,00 €", bg=color_space_gray, fg=color_text_gray, font=("Helvetica", 40))
+    balance_str = get_balance_if() + " €"
+    amount_label = tk.Label(input_frame, text=balance_str, bg=color_space_gray, fg=color_text_gray, font=("Helvetica", 40))
     amount_label.grid(row=0, column=0, sticky="e", pady=(50,50), padx=(50,50))
 
     l_page = balance_page  # Update global Reference
@@ -230,9 +242,11 @@ def open_deposit_page():
     amount_label.grid(row=0, column=0, sticky="e", pady=(50,10), padx=(50,10))
     amount_entry = tk.Entry(input_frame, bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
     amount_entry.grid(row=0, column=1, sticky="w", pady=(50,10), padx=(10,50))
-    # Confirm Button
+    # Button
+    def deposit():
+        deposit_if(amount_entry.get())
     style = default_button_style(root)
-    default_button(input_frame, 1, "Deposit", open_deposit_page)
+    default_button(input_frame, 1, "Deposit", deposit)
 
     l_page = deposit_page  # Update global Reference
 
@@ -257,9 +271,11 @@ def open_withdrawal_page():
     amount_label.grid(row=0, column=0, sticky="e", pady=(50,10), padx=(50,10))
     amount_entry = tk.Entry(input_frame, bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
     amount_entry.grid(row=0, column=1, sticky="w", pady=(50,10), padx=(10,50))
-    # Confirm Button
+    # Button
+    def withdrawal():
+        withdrawal_if(amount_entry.get())
     style = default_button_style(root)
-    default_button(input_frame, 1, "Withdraw", open_withdrawal_page)
+    default_button(input_frame, 1, "Withdraw", withdrawal)
 
     l_page = withdrawal_page  # Update global Reference
 
@@ -294,16 +310,13 @@ def open_transfer_page():
     ref_label.grid(row=2, column=0, sticky="e", pady=(10,10), padx=(50,10))
     ref_entry = tk.Entry(input_frame, bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
     ref_entry.grid(row=2, column=1, sticky="w", pady=(10,10), padx=(10,50))
-    # Register Button
+    # Button
+    def transfer():
+        transfer_if(rec_entry.get(), amount_entry.get(), ref_entry.get())
     style = default_button_style(root)
-    default_button(input_frame, 3, "Transfer", open_transfer_page)
+    default_button(input_frame, 3, "Transfer", transfer)
     
     l_page = transfer_page  # Update global Reference
-
-
-def login():
-    build_right_navigation()
-    open_balance_page()
 
 
 def start_snapf_nang():
