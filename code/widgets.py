@@ -26,7 +26,7 @@ color_pink = "#E659C2"
 color_purple = "#875BE1"
 
 
-def button_style(root):
+def nav_button_style(root):
     style = ttk.Style(root)
     style.theme_use("clam")
     style.configure("Custom.TButton",
@@ -37,13 +37,11 @@ def button_style(root):
                     focuscolor=color_space_gray,
                     font=("Helvetica", 36),
                     padding=(0, 50))
-    # Hover and Press
     style.map("Custom.TButton",
           foreground=[('active', color_white),
                       ('pressed', color_white)],
           background=[('active', color_button_gray),
                       ('pressed', color_black)])
-    # Neuen Active-Style hinzufügen (zum Beispiel mit schwarzem Hintergrund)
     style.configure("Active.Custom.TButton",
                     background=color_button_gray,
                     foreground=color_white,
@@ -52,4 +50,31 @@ def button_style(root):
                     focuscolor=color_space_gray,
                     font=("Helvetica", 36),
                     padding=(0, 50))
+    return style
+
+
+def login_button_style(root):
+    style = ttk.Style(root)
+    style.theme_use("clam")
+    style.configure("Login.TButton",
+                    background=color_space_gray,
+                    foreground=color_button_text_gray,
+                    borderwidth=0,
+                    focusthickness=0,
+                    focuscolor=color_space_gray,
+                    font=("Helvetica", 24),
+                    padding=(0, 0))
+    style.map("Login.TButton",
+          foreground=[('active', color_white),
+                      ('pressed', color_white)],
+          background=[('active', color_button_gray),
+                      ('pressed', color_black)])
+    style.configure("Active.Login.TButton",
+                    background=color_button_gray,
+                    foreground=color_white,
+                    borderwidth=0,
+                    focusthickness=0,
+                    focuscolor=color_space_gray,
+                    font=("Helvetica", 24),
+                    padding=(0, 0))
     return style

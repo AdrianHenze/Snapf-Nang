@@ -40,7 +40,7 @@ def build_main_frame():
     main_frame.grid_columnconfigure(0, weight=2)
     main_frame.grid_columnconfigure(1, weight=2, minsize=r_page_width)
     
-    build_right_login()
+    build_right_login_registration()
     open_login_page()
 
 
@@ -56,14 +56,30 @@ def insert_title_image(page):
 
 def highlight_active_button(active_button):
     # Reset all Button Styles
-    for b in nav_buttons.values():
+    for _, b in nav_buttons.items():
         b.configure(style="Custom.TButton")
     # Highlight Active Button
-    nav_buttons[active_button].configure(style="Active.Custom.TButton")
+    if active_button in nav_buttons:
+        nav_buttons[active_button].configure(style="Active.Custom.TButton")
+    else:
+        pass
 
 
-def build_right_login():
+def nav_button(frame, row, col, text, command):
+    b = ttk.Button(frame, text=text, style="Custom.TButton", command=command)
+    b.grid(row=row, column=col, sticky="ew", pady=10, padx=10)
+    nav_buttons[text] = b
+
+
+def login_button(frame, text, command):
+    b = ttk.Button(frame, text=text, style="Login.TButton", command=command)
+    row = 2 if text=="Login" else 3
+    b.grid(row=row, column=1, sticky="ew", pady=(30,30), padx=(10,50), ipady=10)
+
+
+def build_right_login_registration():
     global r_page
+    nav_buttons.clear()
     if r_page:
         r_page.destroy()  # Remove current Right Page
     r_page = tk.Frame(main_frame, bg=color_space_gray, width=r_page_width)
@@ -76,17 +92,14 @@ def build_right_login():
     nav_frame.grid_rowconfigure(4, weight=1)
     nav_frame.grid_columnconfigure(0, weight=1)
     # Buttons
-    def button(frame, row, col, text, command):
-        b = ttk.Button(frame, text=text, style="Custom.TButton", command=command)
-        b.grid(row=row, column=col, sticky="ew", pady=10, padx=10)
-        nav_buttons[text] = b
-    style = button_style(root)
-    button(nav_frame, 2, 0, "Login", open_login_page)
-    button(nav_frame, 3, 0, "Register", open_register_page)
+    style = nav_button_style(root)
+    nav_button(nav_frame, 2, 0, "Login", open_login_page)
+    nav_button(nav_frame, 3, 0, "Register", open_register_page)
 
 
 def build_right_navigation():
     global r_page
+    nav_buttons.clear()
     if r_page:
         r_page.destroy()  # Remove current Right Page
     r_page = tk.Frame(main_frame, bg=color_space_gray, width=r_page_width)
@@ -99,14 +112,11 @@ def build_right_navigation():
     nav_frame.grid_rowconfigure(4, weight=1)
     nav_frame.grid_columnconfigure(0, weight=1)
     # Buttons
-    def button(frame, row, col, text, command):
-        b = ttk.Button(frame, text=text, style="Custom.TButton", command=command)
-        b.grid(row=row, column=col, sticky="ew", pady=10, padx=10)
-    style = button_style(root)
-    button(nav_frame, 0, 0, "Balance", open_balance_page)
-    button(nav_frame, 2, 0, "Deposit", open_deposit_page)
-    button(nav_frame, 3, 0, "Withdrawal", open_withdrawal_page)
-    button(nav_frame, 4, 0, "Transfer", open_transfer_page)
+    style = nav_button_style(root)
+    nav_button(nav_frame, 0, 0, "Balance", open_balance_page)
+    nav_button(nav_frame, 2, 0, "Deposit", open_deposit_page)
+    nav_button(nav_frame, 3, 0, "Withdrawal", open_withdrawal_page)
+    nav_button(nav_frame, 4, 0, "Transfer", open_transfer_page)
 
 
 def open_login_page():
@@ -122,16 +132,29 @@ def open_login_page():
 
     insert_title_image(login_page)
 
-    label = tk.Label(login_page, text="Login Page", bg=color_gray, fg=color_white)
-    label.place(relx=0.5, rely=0.5, anchor="center")
-    
+    input_frame = tk.Frame(login_page, bg=color_space_gray, relief="ridge", borderwidth=10)
+    input_frame.place(relx=0.5, rely=0.5, anchor="center")
+    input_frame.pack_propagate(False)
+    # Username
+    name_label = tk.Label(input_frame, text="Username:", bg=color_space_gray, fg=color_text_gray, font=("Helvetica", 24))
+    name_label.grid(row=0, column=0, sticky="e", pady=(50,10), padx=(50,10))
+    name_entry = tk.Entry(input_frame, bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
+    name_entry.grid(row=0, column=1, sticky="w", pady=(50,10), padx=(10,50))
+    # Password
+    pw_label = tk.Label(input_frame, text="Passwort:", bg=color_space_gray, fg=color_text_gray, font=("Helvetica", 24))
+    pw_label.grid(row=1, column=0, sticky="e", pady=(10,10), padx=(50,10))
+    pw_entry = tk.Entry(input_frame, show="*", bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
+    pw_entry.grid(row=1, column=1, sticky="w", pady=(10,10), padx=(10,50))
+    # Login Button
+    style = login_button_style(root)
+    login_button(input_frame, "Login", login)
+
     l_page = login_page  # Update global Reference
 
 
 def open_register_page():
     global l_page
-    if l_page:
-        l_page.destroy()  # Remove current Left Page
+    l_page.destroy()  # Remove current Left Page
     
     highlight_active_button("Register")
 
@@ -141,8 +164,27 @@ def open_register_page():
 
     insert_title_image(register_page)
 
-    label = tk.Label(register_page, text="Register Page", bg=color_gray, fg=color_white)
-    label.place(relx=0.5, rely=0.5, anchor="center")
+    input_frame = tk.Frame(register_page, bg=color_space_gray, relief="ridge", borderwidth=10)
+    input_frame.place(relx=0.5, rely=0.5, anchor="center")
+    input_frame.pack_propagate(False)
+    # Username
+    name_label = tk.Label(input_frame, text="Username:", bg=color_space_gray, fg=color_text_gray, font=("Helvetica", 24))
+    name_label.grid(row=0, column=0, sticky="e", pady=(50,10), padx=(50,10))
+    name_entry = tk.Entry(input_frame, bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
+    name_entry.grid(row=0, column=1, sticky="w", pady=(50,10), padx=(10,50))
+    # Password
+    pw_label = tk.Label(input_frame, text="Passwort:", bg=color_space_gray, fg=color_text_gray, font=("Helvetica", 24))
+    pw_label.grid(row=1, column=0, sticky="e", pady=(10,10), padx=(50,10))
+    pw_entry = tk.Entry(input_frame, show="*", bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
+    pw_entry.grid(row=1, column=1, sticky="w", pady=(10,10), padx=(10,50))
+    # Year of Birth
+    name_label = tk.Label(input_frame, text="Year of Birth:", bg=color_space_gray, fg=color_text_gray, font=("Helvetica", 24))
+    name_label.grid(row=2, column=0, sticky="e", pady=(10,10), padx=(50,10))
+    name_entry = tk.Entry(input_frame, bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
+    name_entry.grid(row=2, column=1, sticky="w", pady=(10,10), padx=(10,50))
+    # Register Button
+    style = login_button_style(root)
+    login_button(input_frame, "Register", login)
     
     l_page = register_page  # Update global Reference
 
@@ -217,6 +259,11 @@ def open_transfer_page():
     label.place(relx=0.5, rely=0.5, anchor="center")
     
     l_page = transfer_page  # Update global Reference
+
+
+def login():
+    build_right_navigation()
+    open_balance_page()
 
 
 def start_snapf_nang():
