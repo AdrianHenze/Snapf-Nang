@@ -43,4 +43,13 @@ def button_style(root):
                       ('pressed', color_white)],
           background=[('active', color_button_gray),
                       ('pressed', color_black)])
+    # Neuen Active-Style hinzufügen (zum Beispiel mit schwarzem Hintergrund)
+    style.configure("Active.Custom.TButton",
+                    background=color_button_gray,
+                    foreground=color_white,
+                    borderwidth=0,
+                    focusthickness=0,
+                    focuscolor=color_space_gray,
+                    font=("Helvetica", 36),
+                    padding=(0, 50))
     return style
