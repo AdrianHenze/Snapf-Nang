@@ -64,7 +64,7 @@ def nav_button_style(root):
                     focusthickness=0,
                     focuscolor=color_space_gray,
                     font=("Helvetica", 36),
-                    padding=(0, 50))
+                    padding=(0, 30))
     style.map("Custom.TButton",
           foreground=[('active', color_white),
                       ('pressed', color_white)],
@@ -72,7 +72,7 @@ def nav_button_style(root):
                       ('pressed', color_black)])
     style.configure("Active.Custom.TButton",
                     background=color_button_gray,
-                    foreground=color_white,
+                    foreground=color_gold,
                     borderwidth=0,
                     focusthickness=0,
                     focuscolor=color_space_gray,

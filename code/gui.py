@@ -46,7 +46,7 @@ def build_main_frame():
 
 
 def insert_title_image(page):
-    img_size = int(0.7*l_page_width)
+    img_size = int(0.75*l_page_width)
     img_data_raw = Image.open("data/img/BG.png")
     img_data = img_data_raw.resize((img_size, img_size))
     img_file = ImageTk.PhotoImage(img_data)
@@ -256,6 +256,7 @@ def open_deposit_page():
     # Button
     def deposit():
         deposit_if(amount_entry.get())
+        amount_entry.delete(0, tk.END)
     style = default_button_style(root)
     default_button(input_frame, 1, "Deposit", deposit)
 
@@ -285,6 +286,7 @@ def open_withdrawal_page():
     # Button
     def withdrawal():
         withdrawal_if(amount_entry.get())
+        amount_entry.delete(0, tk.END)
     style = default_button_style(root)
     default_button(input_frame, 1, "Withdraw", withdrawal)
 
@@ -324,6 +326,9 @@ def open_transfer_page():
     # Button
     def transfer():
         transfer_if(rec_entry.get(), amount_entry.get(), ref_entry.get())
+        rec_entry.delete(0, tk.END)
+        amount_entry.delete(0, tk.END)
+        ref_entry.delete(0, tk.END)
     style = default_button_style(root)
     default_button(input_frame, 3, "Transfer", transfer)
     
