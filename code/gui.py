@@ -71,9 +71,8 @@ def nav_button(frame, row, col, text, command):
     nav_buttons[text] = b
 
 
-def login_button(frame, text, command):
-    b = ttk.Button(frame, text=text, style="Login.TButton", command=command)
-    row = 2 if text=="Login" else 3
+def default_button(frame, row, text, command):
+    b = ttk.Button(frame, text=text, style="Default.TButton", command=command)
     b.grid(row=row, column=1, sticky="ew", pady=(30,30), padx=(10,50), ipady=10)
 
 
@@ -146,8 +145,8 @@ def open_login_page():
     pw_entry = tk.Entry(input_frame, show="*", bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
     pw_entry.grid(row=1, column=1, sticky="w", pady=(10,10), padx=(10,50))
     # Login Button
-    style = login_button_style(root)
-    login_button(input_frame, "Login", login)
+    style = default_button_style(root)
+    default_button(input_frame, 2, "Login", login)
 
     l_page = login_page  # Update global Reference
 
@@ -183,8 +182,8 @@ def open_register_page():
     name_entry = tk.Entry(input_frame, bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
     name_entry.grid(row=2, column=1, sticky="w", pady=(10,10), padx=(10,50))
     # Register Button
-    style = login_button_style(root)
-    login_button(input_frame, "Register", login)
+    style = default_button_style(root)
+    default_button(input_frame, 3, "Register", login)
     
     l_page = register_page  # Update global Reference
 
@@ -201,9 +200,13 @@ def open_balance_page():
 
     insert_title_image(balance_page)
 
-    label = tk.Label(balance_page, text="Balance Page", bg=color_gray, fg=color_white)
-    label.place(relx=0.5, rely=0.5, anchor="center")
-    
+    input_frame = tk.Frame(balance_page, bg=color_space_gray, relief="ridge", borderwidth=10)
+    input_frame.place(relx=0.5, rely=0.5, anchor="center")
+    input_frame.pack_propagate(False)
+    # Amount
+    amount_label = tk.Label(input_frame, text="0,00 €", bg=color_space_gray, fg=color_text_gray, font=("Helvetica", 40))
+    amount_label.grid(row=0, column=0, sticky="e", pady=(50,50), padx=(50,50))
+
     l_page = balance_page  # Update global Reference
 
 
@@ -219,9 +222,18 @@ def open_deposit_page():
 
     insert_title_image(deposit_page)
 
-    label = tk.Label(deposit_page, text="Deposit Page", bg=color_gray, fg=color_white)
-    label.place(relx=0.5, rely=0.5, anchor="center")
-    
+    input_frame = tk.Frame(deposit_page, bg=color_space_gray, relief="ridge", borderwidth=10)
+    input_frame.place(relx=0.5, rely=0.5, anchor="center")
+    input_frame.pack_propagate(False)
+    # Amount
+    amount_label = tk.Label(input_frame, text="Money amount:", bg=color_space_gray, fg=color_text_gray, font=("Helvetica", 24))
+    amount_label.grid(row=0, column=0, sticky="e", pady=(50,10), padx=(50,10))
+    amount_entry = tk.Entry(input_frame, bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
+    amount_entry.grid(row=0, column=1, sticky="w", pady=(50,10), padx=(10,50))
+    # Confirm Button
+    style = default_button_style(root)
+    default_button(input_frame, 1, "Deposit", open_deposit_page)
+
     l_page = deposit_page  # Update global Reference
 
 
@@ -237,9 +249,18 @@ def open_withdrawal_page():
 
     insert_title_image(withdrawal_page)
 
-    label = tk.Label(withdrawal_page, text="Withdrawal Page", bg=color_gray, fg=color_white)
-    label.place(relx=0.5, rely=0.5, anchor="center")
-    
+    input_frame = tk.Frame(withdrawal_page, bg=color_space_gray, relief="ridge", borderwidth=10)
+    input_frame.place(relx=0.5, rely=0.5, anchor="center")
+    input_frame.pack_propagate(False)
+    # Amount
+    amount_label = tk.Label(input_frame, text="Money amount:", bg=color_space_gray, fg=color_text_gray, font=("Helvetica", 24))
+    amount_label.grid(row=0, column=0, sticky="e", pady=(50,10), padx=(50,10))
+    amount_entry = tk.Entry(input_frame, bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
+    amount_entry.grid(row=0, column=1, sticky="w", pady=(50,10), padx=(10,50))
+    # Confirm Button
+    style = default_button_style(root)
+    default_button(input_frame, 1, "Withdraw", open_withdrawal_page)
+
     l_page = withdrawal_page  # Update global Reference
 
 
@@ -254,9 +275,28 @@ def open_transfer_page():
     transfer_page.grid_propagate(False)
 
     insert_title_image(transfer_page)
-    
-    label = tk.Label(transfer_page, text="Transfer Page", bg=color_gray, fg=color_white)
-    label.place(relx=0.5, rely=0.5, anchor="center")
+
+    input_frame = tk.Frame(transfer_page, bg=color_space_gray, relief="ridge", borderwidth=10)
+    input_frame.place(relx=0.5, rely=0.5, anchor="center")
+    input_frame.pack_propagate(False)
+    # Recipient
+    rec_label = tk.Label(input_frame, text="Recipient name:", bg=color_space_gray, fg=color_text_gray, font=("Helvetica", 24))
+    rec_label.grid(row=0, column=0, sticky="e", pady=(50,10), padx=(50,10))
+    rec_entry = tk.Entry(input_frame, bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
+    rec_entry.grid(row=0, column=1, sticky="w", pady=(50,10), padx=(10,50))
+    # Betrag
+    amount_label = tk.Label(input_frame, text="Money amount:", bg=color_space_gray, fg=color_text_gray, font=("Helvetica", 24))
+    amount_label.grid(row=1, column=0, sticky="e", pady=(10,10), padx=(50,10))
+    amount_entry = tk.Entry(input_frame, bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
+    amount_entry.grid(row=1, column=1, sticky="w", pady=(10,10), padx=(10,50))
+    # Payment Reference
+    ref_label = tk.Label(input_frame, text="Ref. (optional):", bg=color_space_gray, fg=color_text_gray, font=("Helvetica", 24))
+    ref_label.grid(row=2, column=0, sticky="e", pady=(10,10), padx=(50,10))
+    ref_entry = tk.Entry(input_frame, bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
+    ref_entry.grid(row=2, column=1, sticky="w", pady=(10,10), padx=(10,50))
+    # Register Button
+    style = default_button_style(root)
+    default_button(input_frame, 3, "Transfer", open_transfer_page)
     
     l_page = transfer_page  # Update global Reference
 

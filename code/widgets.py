@@ -53,23 +53,24 @@ def nav_button_style(root):
     return style
 
 
-def login_button_style(root):
+def default_button_style(root):
     style = ttk.Style(root)
     style.theme_use("clam")
-    style.configure("Login.TButton",
+    style.configure("Default.TButton",
                     background=color_space_gray,
                     foreground=color_button_text_gray,
-                    borderwidth=0,
+                    borderwidth=-1,
+                    relief="sunken",
                     focusthickness=0,
                     focuscolor=color_space_gray,
                     font=("Helvetica", 24),
                     padding=(0, 0))
-    style.map("Login.TButton",
+    style.map("Default.TButton",
           foreground=[('active', color_white),
                       ('pressed', color_white)],
           background=[('active', color_button_gray),
                       ('pressed', color_black)])
-    style.configure("Active.Login.TButton",
+    style.configure("Active.Default.TButton",
                     background=color_button_gray,
                     foreground=color_white,
                     borderwidth=0,
