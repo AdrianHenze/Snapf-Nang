@@ -26,6 +26,34 @@ color_pink = "#E659C2"
 color_purple = "#875BE1"
 
 
+def default_button_style(root):
+    style = ttk.Style(root)
+    style.theme_use("clam")
+    style.configure("Default.TButton",
+                    background=color_space_gray,
+                    foreground=color_button_text_gray,
+                    borderwidth=-1,
+                    relief="sunken",
+                    focusthickness=0,
+                    focuscolor=color_space_gray,
+                    font=("Helvetica", 24),
+                    padding=(0, 0))
+    style.map("Default.TButton",
+          foreground=[('active', color_white),
+                      ('pressed', color_white)],
+          background=[('active', color_button_gray),
+                      ('pressed', color_black)])
+    style.configure("Active.Default.TButton",
+                    background=color_button_gray,
+                    foreground=color_white,
+                    borderwidth=0,
+                    focusthickness=0,
+                    focuscolor=color_space_gray,
+                    font=("Helvetica", 24),
+                    padding=(0, 0))
+    return style
+
+
 def nav_button_style(root):
     style = ttk.Style(root)
     style.theme_use("clam")
@@ -52,30 +80,28 @@ def nav_button_style(root):
                     padding=(0, 50))
     return style
 
-
-def default_button_style(root):
+def logout_button_style(root):
     style = ttk.Style(root)
     style.theme_use("clam")
-    style.configure("Default.TButton",
+    style.configure("Logout.TButton",
                     background=color_space_gray,
-                    foreground=color_button_text_gray,
-                    borderwidth=-1,
-                    relief="sunken",
+                    foreground=color_dark_red,
+                    borderwidth=0,
                     focusthickness=0,
                     focuscolor=color_space_gray,
                     font=("Helvetica", 24),
-                    padding=(0, 0))
-    style.map("Default.TButton",
-          foreground=[('active', color_white),
-                      ('pressed', color_white)],
-          background=[('active', color_button_gray),
+                    padding=(0, 20))
+    style.map("Logout.TButton",
+          foreground=[('active', color_red),
+                      ('pressed', color_red)],
+          background=[('active', color_black),
                       ('pressed', color_black)])
-    style.configure("Active.Default.TButton",
+    style.configure("Active.Logout.TButton",
                     background=color_button_gray,
                     foreground=color_white,
                     borderwidth=0,
                     focusthickness=0,
                     focuscolor=color_space_gray,
                     font=("Helvetica", 24),
-                    padding=(0, 0))
+                    padding=(0, 50))
     return style

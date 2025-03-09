@@ -66,15 +66,20 @@ def highlight_active_button(active_button):
         pass
 
 
-def nav_button(frame, row, col, text, command):
-    b = ttk.Button(frame, text=text, style="Custom.TButton", command=command)
-    b.grid(row=row, column=col, sticky="ew", pady=10, padx=10)
-    nav_buttons[text] = b
-
-
 def default_button(frame, row, text, command):
     b = ttk.Button(frame, text=text, style="Default.TButton", command=command)
     b.grid(row=row, column=1, sticky="ew", pady=(30,30), padx=(10,50), ipady=10)
+
+
+def nav_button(frame, row, col, text, command):
+    if text == "Logout":
+        style = "Logout.TButton"
+    else:
+        style = "Custom.TButton"
+    b = ttk.Button(frame, text=text, style=style, command=command)
+    b.grid(row=row, column=col, sticky="ew", pady=10, padx=10)
+    if text != "Logout":
+        nav_buttons[text] = b
 
 
 def build_right_login_registration():
@@ -112,11 +117,17 @@ def build_right_navigation():
     nav_frame.grid_rowconfigure(4, weight=1)
     nav_frame.grid_columnconfigure(0, weight=1)
     # Buttons
+    def logout():
+        logout_if()
+        build_right_login_registration()
+        open_login_page()
     style = nav_button_style(root)
     nav_button(nav_frame, 0, 0, "Balance", open_balance_page)
     nav_button(nav_frame, 2, 0, "Deposit", open_deposit_page)
     nav_button(nav_frame, 3, 0, "Withdrawal", open_withdrawal_page)
     nav_button(nav_frame, 4, 0, "Transfer", open_transfer_page)
+    style = logout_button_style(root)
+    nav_button(nav_frame, 5, 0, "Logout", logout)
 
 
 def open_login_page():
