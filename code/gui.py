@@ -53,9 +53,10 @@ def build_main_frame():
             b = ttk.Button(frame, text=text, style="Custom.TButton", command=command)
             b.grid(row=row, column=col, sticky="ew", pady=10, padx=10)
         style = button_style(root)
-        button(nav_frame, 0, 0, "Deposit", open_deposit_page)
+        button(nav_frame, 0, 0, "Balance", open_balance_page)
+        button(nav_frame, 2, 0, "Deposit", open_deposit_page)
         button(nav_frame, 3, 0, "Withdrawal", open_withdrawal_page)
-        button(nav_frame, 4, 0, "Balance", open_balance_page)
+        button(nav_frame, 4, 0, "Transfer", open_transfer_page)
 
     def build_left_title_page():
         global l_page
@@ -75,37 +76,9 @@ def build_main_frame():
     build_left_title_page()
 
 
-def open_deposit_page():
-    global l_page
-    l_page.destroy()  # Remove Current Left Page
-
-    deposit_page = tk.Frame(main_frame, bg=color_gray, width=l_page_width)
-    deposit_page.grid(row=0, column=0, sticky="nsew")
-    deposit_page.grid_propagate(False)
-
-    label = tk.Label(deposit_page, text="Deposit Page", bg=color_gray, fg=color_white)
-    label.place(relx=0.5, rely=0.5, anchor="center")
-    
-    l_page = deposit_page  # Update Global Reference
-
-
-def open_withdrawal_page():
-    global l_page
-    l_page.destroy()  # Remove Current Left Page
-
-    withdrawal_page = tk.Frame(main_frame, bg=color_gray, width=l_page_width)
-    withdrawal_page.grid(row=0, column=0, sticky="nsew")
-    withdrawal_page.grid_propagate(False)
-
-    label = tk.Label(withdrawal_page, text="Withdrawal Page", bg=color_gray, fg=color_white)
-    label.place(relx=0.5, rely=0.5, anchor="center")
-    
-    l_page = withdrawal_page  # Update Global Reference
-
-
 def open_balance_page():
     global l_page
-    l_page.destroy()  # Remove Current Left Page
+    l_page.destroy()  # Remove current Left Page
 
     balance_page = tk.Frame(main_frame, bg=color_gray, width=l_page_width)
     balance_page.grid(row=0, column=0, sticky="nsew")
@@ -114,7 +87,49 @@ def open_balance_page():
     label = tk.Label(balance_page, text="Balance Page", bg=color_gray, fg=color_white)
     label.place(relx=0.5, rely=0.5, anchor="center")
     
-    l_page = balance_page  # Update Global Reference
+    l_page = balance_page  # Update global Reference
+
+
+def open_deposit_page():
+    global l_page
+    l_page.destroy()  # Remove current Left Page
+
+    deposit_page = tk.Frame(main_frame, bg=color_gray, width=l_page_width)
+    deposit_page.grid(row=0, column=0, sticky="nsew")
+    deposit_page.grid_propagate(False)
+
+    label = tk.Label(deposit_page, text="Deposit Page", bg=color_gray, fg=color_white)
+    label.place(relx=0.5, rely=0.5, anchor="center")
+    
+    l_page = deposit_page  # Update global Reference
+
+
+def open_withdrawal_page():
+    global l_page
+    l_page.destroy()  # Remove current Left Page
+
+    withdrawal_page = tk.Frame(main_frame, bg=color_gray, width=l_page_width)
+    withdrawal_page.grid(row=0, column=0, sticky="nsew")
+    withdrawal_page.grid_propagate(False)
+
+    label = tk.Label(withdrawal_page, text="Withdrawal Page", bg=color_gray, fg=color_white)
+    label.place(relx=0.5, rely=0.5, anchor="center")
+    
+    l_page = withdrawal_page  # Update global Reference
+
+
+def open_transfer_page():
+    global l_page
+    l_page.destroy()  # Remove current Left Page
+    
+    transfer_page = tk.Frame(main_frame, bg=color_gray, width=l_page_width)
+    transfer_page.grid(row=0, column=0, sticky="nsew")
+    transfer_page.grid_propagate(False)
+    
+    label = tk.Label(transfer_page, text="Transfer Page", bg=color_gray, fg=color_white)
+    label.place(relx=0.5, rely=0.5, anchor="center")
+    
+    l_page = transfer_page  # Update global Reference
 
 
 def start_snapf_nang():
