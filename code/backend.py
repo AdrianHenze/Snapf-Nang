@@ -77,7 +77,7 @@ def get_kontoauszug():
     auszug = ""
     for transaktion in konten[aktiver_nutzer]["transaktionen"]:
         typ = transaktion["typ"]
-        betrag = transaktion["betrag"]
+        betrag = round(transaktion["betrag"], 2)
         datum = transaktion["datum"]
-        auszug += f"{datum} | {typ} | {betrag}\n"
+        auszug += f"{datum} | {typ} | {betrag} €\n"
     return auszug
