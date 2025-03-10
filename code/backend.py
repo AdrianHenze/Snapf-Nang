@@ -24,7 +24,7 @@ def transaktionen(nutzer, typ, betrag, **zusatzinfos):
         "datum": datum
     }
     transaktion.update(zusatzinfos)
-    konten[nutzer]["transaktionen"].append(transaktion)
+    konten[nutzer]["transaktionen"].insert(0,transaktion)
 
 
 def einzahlen(betrag):
