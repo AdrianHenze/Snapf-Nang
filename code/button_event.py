@@ -22,8 +22,10 @@ def is_valid_registration(name, passw, year):
 
 
 def get_balance_if():
-    balance = round(get_kontostand(), 2)
-    return str(balance).replace('.', ',')
+    balance = get_kontostand()
+    f_balance = f"{balance:,.2f}"
+    f_balance = f_balance.replace(',', '!').replace('.', ',').replace('!', '.')
+    return f_balance
 
 
 def get_transactions_if():
