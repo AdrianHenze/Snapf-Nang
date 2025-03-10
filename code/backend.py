@@ -44,7 +44,7 @@ def login(inhaber, passwort):
     if inhaber not in konten:
         return -1  # Konto existert nicht
     if konten[inhaber]["passwort"] != passwort:
-        return -1   #Falsches Passwort
+        return -2  # Falsches Passwort
     aktiver_nutzer = inhaber    
     return 0
     
