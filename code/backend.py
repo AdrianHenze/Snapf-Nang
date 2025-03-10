@@ -94,7 +94,7 @@ class Bank:
         ziel_konto.kontostand += betrag
         datum = datetime.now().strftime("%d/&m/%Y, %H:%M:%S")
         self.angemeldetes_konto.transaktionen.append({
-            "typ": "Überweisung gesendet"
+            "typ": "Überweisung gesendet",
             "betrag": betrag,
             "datum": datum,
             "quelle": ziel_inhaber
