@@ -14,7 +14,7 @@ import sqlite3
 class Konto:
     def __init__(self, konto_nummer, konto_halter, guthaben=0.0, passwort="", ober_konto=None):
         """
-        Erstellung eines Kontos mit Kontonummer, Inhaber und Guthaben
+        Erstellung eines Kontos mit Kontonummer, Inhaber, Guthaben und Passwort
         wenn benötigt kann auch ein Unterkonto erstellt werden.
         """
         self.Konto_nummer = konto_nummer
@@ -39,7 +39,7 @@ class BankDatenbank:
             Erstellt Tabellen für Konten, falls diese noch nicht existieren.
             Ober_konto erlaubt es, eine Beziehung zwischen Ober- und Unterkonto herzustellen
             """
-            self.cursor.execute(
+            self.cursor.execute('''
                 CREATE TABLE IF NOT EXISTS konto (
                     konto_nummer TEXT PRIMARY KEY,
                     konto_halter TEXT NOT NULL,
@@ -47,7 +47,19 @@ class BankDatenbank:
                     ober_konto TEXT,
                     FOREIGN KEY (ober_konto) REFERENCES konto (konto_nummer)
                 )
-            )
+            ''')
+            self.conn.commit()
+
+            self.cursor.execute('''
+                CREATE TABLE IF NOT EXISTS transaktion (
+                    id INTEGER PRIAMARY KEY AUTOINCREMENT,
+                    konto_nummer TEXT NOT NULL,
+                    transaktions_type,
+                    betrag REAL NOT NULL,
+                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (konto_nummer) REFERENCES konto (konto_nummer)
+                )
+            ''')
             self.conn.commit()
 
             def add_konto(self, konto):
@@ -64,7 +76,6 @@ class BankDatenbank:
                     
                 try:
                     self.cursor.execute(
-                        "INSERT INTO Kontos (konto_nummer, konto_halter, guthaben, ober_konto) VALUE(?, ?, ?, ?)"
                         (konto.konto_nummer, konto.konto_halter, konto.guthaben, konto.ober_konto)
                     )
                     self.conn.commit()
@@ -77,7 +88,6 @@ class BankDatenbank:
                 Das Konto wird anhang der Nummer ausgelesen.
                 """
                 self.cursor.execute(
-                    "SELECT konto_nummer, konto_halter, guthaben, ober_konto FROM kontos WHERE konto_nummer = ?"
                     (konto_nummer,)
                 )
                 result = self.cursor.fetchone()
@@ -101,7 +111,6 @@ class BankDatenbank:
                 Gibt an welche Unterkontos zu diesem Oberkonto gehören.
                 """
                 self.cursor.execute(
-                    "SELECT konto_nummer, konto_halter, ober_konto, FROM kontos WHERE ober_konto = ?"
                     (ober_konto_nummer,)
                 )
                 rows = self.cursor.fetchall()
@@ -135,7 +144,7 @@ class BankDatenbank:
                 """
                 Führt eine Überweisung durch vom Quellenkonto zum Zielkonto.
                 """
-                if betrag = <= 0:
+                if betrag <= 0:
                     raise ValueError("Der Überweisungsbetrag muss positiv sein.")
                 von_konto = self.get_konto(von_konto_nummer)
                 zu_konto = self.get_konto(zu_konto_nummer)
@@ -166,7 +175,6 @@ class BankDatenbank:
                 Bei erfolgreichem Login wird das Konto als {logged_in_konto} gespreichert.
                 """
                 self.cursor.execute(
-                    "SELECT konto_nummer, konto_halter, guthaben, passwort, ober_konto, FROM kontos WHERE konto_halter = ? AND passwort = ?"
                     (konto_halter, passwort)
                 )
                 result = self.cursor.fetchone()
@@ -186,3 +194,12 @@ class BankDatenbank:
                     self.logged_in_konto = None
                 else:
                     print("Kein Benutzer angemeldet.")
+
+            def register(self, konto_nummer, konto_halter, passwort, anfangs_guthaben=0.0, ober_konto=None):
+                """
+                Erstellt einem neuen Benutzer.
+                """
+                new_konto = Konto(konto_nummer, konto_halter, anfangs_guthaben, passwort, ober_konto)
+                self.add_konto(new_konto)
+                print(f"Registration erfolgreich: {konto_halter} (Konto: {konto_nummer})")
+                return new_konto
