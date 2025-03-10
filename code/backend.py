@@ -28,7 +28,6 @@ def transaktionen(nutzer, typ, betrag, **zusatzinfos):
 def einzahlen(betrag):
     konten[aktiver_nutzer]["kontostand"] += betrag
     transaktionen(aktiver_nutzer, "Einzahlung", betrag)
-    return 0
 
 
 def abheben(betrag):
@@ -51,12 +50,10 @@ def login(inhaber, passwort):
 
 def logout():
     global aktiver_nutzer
-    if aktiver_nutzer in None:
-        return -1  # Kein Nutzer angemeldet
     aktiver_nutzer = None
 
 
-def ueberweisung(ziel_inhaber, betrag):
+def ueberweisung(ziel_inhaber, betrag, ):
     if konten[aktiver_nutzer]["kontostand"] < betrag:
         return -1  # nicht genügend Guthaben
     if ziel_inhaber not in konten:
