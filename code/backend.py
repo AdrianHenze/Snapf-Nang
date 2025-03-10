@@ -9,7 +9,7 @@ def konto_erstellen(inhaber, passwort):
         return -1  # Konto existert bereits
     konten[inhaber] = {
         "passwort": passwort,
-        "guthaben": 0.0,
+        "kontostand": 0.0,
         "transaktionen": []
     }
     aktiver_nutzer = inhaber
