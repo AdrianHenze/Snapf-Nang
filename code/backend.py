@@ -74,7 +74,10 @@ def get_kontostand():
 
 
 def get_kontoauszug():
-    typ = konten[aktiver_nutzer]["transaktionen"]["typ"]
-    betrag = konten[aktiver_nutzer]["transaktionen"]["betrag"]
-    datum = konten[aktiver_nutzer]["transaktionen"]["datum"]
-    return str(datum) + " | " + str(typ) +  " | " + str(betrag)
+    auszug = ""
+    for transaktion in konten[aktiver_nutzer]["transaktionen"]:
+        typ = transaktion["typ"]
+        betrag = transaktion["betrag"]
+        datum = transaktion["datum"]
+        auszug += f"{datum} | {typ} | {betrag}\n"
+    return auszug
