@@ -4,6 +4,7 @@ konten = {}
 aktiver_nutzer = None
 
 def konto_erstellen(inhaber, passwort):
+    global aktiver_nutzer
     if inhaber in konten:
         return -1  # Konto existert bereits
     konten[inhaber] = {
@@ -11,6 +12,7 @@ def konto_erstellen(inhaber, passwort):
         "guthaben": 0.0,
         "transaktionen": []
     }
+    aktiver_nutzer = inhaber
     return 0
 
 
@@ -53,7 +55,7 @@ def logout():
     aktiver_nutzer = None
 
 
-def ueberweisung(ziel_inhaber, betrag, ):
+def ueberweisung(ziel_inhaber, betrag):
     if konten[aktiver_nutzer]["kontostand"] < betrag:
         return -1  # nicht genügend Guthaben
     if ziel_inhaber not in konten:
