@@ -250,21 +250,41 @@ def open_transactions_page():
     transactions_page = tk.Frame(main_frame, bg=color_gray, width=l_page_width)
     transactions_page.grid(row=0, column=0, sticky="nsew")
     transactions_page.grid_propagate(False)
-
+    
     insert_title_image(transactions_page)
 
-    input_frame = tk.Frame(transactions_page, bg=color_space_gray, relief="ridge", borderwidth=10)
-    input_frame.place(relx=0.5, rely=0.5, anchor="center")
-    input_frame.pack_propagate(False)
-    # Amount
+    transactions_page.grid_rowconfigure(0, weight=1)
+    transactions_page.grid_rowconfigure(1, weight=0)
+    transactions_page.grid_columnconfigure(0, weight=1)
+
+    # Transaction List
+    canvas = tk.Canvas(transactions_page, bg=color_space_gray, highlightthickness=0)
+    canvas.grid(row=0, column=0, sticky="nsew")
+    v_scroll = tk.Scrollbar(transactions_page, orient="vertical", command=canvas.yview)
+    v_scroll.grid(row=0, column=1, sticky="ns")
+    canvas.configure(yscrollcommand=v_scroll.set)
+    input_frame = tk.Frame(canvas, bg=color_space_gray, relief="ridge", borderwidth=10)
+    canvas.create_window((0,0), window=input_frame, anchor="nw")
+    def on_frame_configure(event):
+        canvas.configure(scrollregion=canvas.bbox("all"))
+    input_frame.bind("<Configure>", on_frame_configure)
+    def _on_mousewheel(event):
+        canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+    canvas.bind("<Enter>", lambda e: canvas.bind_all("<MouseWheel>", _on_mousewheel))
+    canvas.bind("<Leave>", lambda e: canvas.unbind_all("<MouseWheel>"))
     balance_str = test_transactions_string
     amount_label = tk.Label(input_frame, text=balance_str, bg=color_space_gray, fg=color_text_gray, font=("Helvetica", 24))
     amount_label.grid(row=0, column=0, sticky="e", pady=(50,50), padx=(50,50))
+    
     # Button
+    button_area = tk.Frame(transactions_page, bg=color_space_gray, height=100)
+    button_area.grid(row=1, column=0, columnspan=2, sticky="ew")
+    button_area.grid_propagate(False)
+    button_area.grid_columnconfigure(0, weight=1)
     def show_balance():
         open_balance_page()
     style = default_button_style(root)
-    default_button(input_frame, 1, 0, "Show Balance", show_balance)
+    default_button(button_area, 1, 0, "Show Balance", show_balance)
 
     l_page = transactions_page  # Update global Reference
 
