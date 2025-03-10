@@ -22,11 +22,17 @@ def is_valid_registration(name, passw, year):
 
 
 def get_balance_if():
-    return get_kontostand()
+    balance = round(get_kontostand(), 2)
+    return str(balance).replace('.', ',')
+
+
+def get_transactions_if():
+    return get_kontoauszug()
 
 
 def deposit_if(amount):
     if amount:
+        amount = round(float(amount), 2)
         einzahlen(amount)
         print(f"✅ Deposit of {amount} € successful.")
     else:
@@ -35,6 +41,7 @@ def deposit_if(amount):
 
 def withdrawal_if(amount):
     if amount:
+        amount = round(float(amount), 2)
         rc = abheben(amount)
         if rc == -1:
             print("❌ WITHDRAWAL DENIED: Not enough money in the bank.")
@@ -46,6 +53,7 @@ def withdrawal_if(amount):
 
 def transfer_if(name, amount, ref):
     if name and amount:
+        amount = round(float(amount), 2)
         rc = ueberweisung(name, amount)
         if rc == -1:
             print("❌ TRANSFER DENIED: Not enough money in the bank.")

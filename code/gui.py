@@ -233,7 +233,7 @@ def open_balance_page():
     # Amount
     balance_str = get_balance_if() + " €"
     amount_label = tk.Label(input_frame, text=balance_str, bg=color_space_gray, fg=color_text_gray, font=("Helvetica", 40))
-    amount_label.grid(row=0, column=0, sticky="e", pady=(50,50), padx=(50,50))
+    amount_label.grid(row=0, column=0, sticky="n", pady=(50,50), padx=(50,50))
     # Button
     def show_transactions():
         open_transactions_page()
@@ -272,7 +272,7 @@ def open_transactions_page():
         canvas.yview_scroll(int(-1*(event.delta/120)), "units")
     canvas.bind("<Enter>", lambda e: canvas.bind_all("<MouseWheel>", _on_mousewheel))
     canvas.bind("<Leave>", lambda e: canvas.unbind_all("<MouseWheel>"))
-    balance_str = test_transactions_string
+    balance_str = get_transactions_if()
     amount_label = tk.Label(input_frame, text=balance_str, bg=color_space_gray, fg=color_text_gray, font=("Helvetica", 24))
     amount_label.grid(row=0, column=0, sticky="e", pady=(50,50), padx=(50,50))
     
