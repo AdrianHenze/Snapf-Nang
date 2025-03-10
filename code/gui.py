@@ -14,6 +14,8 @@ l_page_width = None
 
 nav_buttons = {}
 
+test_transactions_string = "01.01.2025 00:00:00 | Type | 100,00 €\n01.01.2025 00:00:00 | Type | 100,00 €\n01.01.2025 00:00:00 | Type | 100,00 €\n01.01.2025 00:00:00 | Type | 100,00 €\n01.01.2025 00:00:00 | Type | 100,00 €\n01.01.2025 00:00:00 | Type | 100,00 €\n01.01.2025 00:00:00 | Type | 100,00 €\n01.01.2025 00:00:00 | Type | 100,00 €\n01.01.2025 00:00:00 | Type | 100,00 €\n01.01.2025 00:00:00 | Type | 100,00 €\n01.01.2025 00:00:00 | Type | 100,00 €\n01.01.2025 00:00:00 | Type | 100,00 €\n01.01.2025 00:00:00 | Type | 100,00 €\n01.01.2025 00:00:00 | Type | 100,00 €\n01.01.2025 00:00:00 | Type | 100,00 €\n01.01.2025 00:00:00 | Type | 100,00 €\n01.01.2025 00:00:00 | Type | 100,00 €\n01.01.2025 00:00:00 | Type | 100,00 €\n01.01.2025 00:00:00 | Type | 100,00 €\n01.01.2025 00:00:00 | Type | 100,00 €\n01.01.2025 00:00:00 | Type | 100,00 €\n"
+
 def build_window():
     global root, window_width, r_page_width, l_page_width
     root = tk.Tk()
@@ -66,9 +68,12 @@ def highlight_active_button(active_button):
         pass
 
 
-def default_button(frame, row, text, command):
+def default_button(frame, row, col, text, command):
     b = ttk.Button(frame, text=text, style="Default.TButton", command=command)
-    b.grid(row=row, column=1, sticky="ew", pady=(30,30), padx=(10,50), ipady=10)
+    if text == "Show Transaction History" or text == "Show Balance":
+        b.grid(row=row, column=col, sticky="ew", pady=(10,10), padx=(10,10), ipady=10)
+    else:
+        b.grid(row=row, column=col, sticky="ew", pady=(30,30), padx=(10,50), ipady=10)
 
 
 def nav_button(frame, row, col, text, command):
@@ -163,7 +168,7 @@ def open_login_page():
             open_balance_page()
     # Login Button
     style = default_button_style(root)
-    default_button(input_frame, 2, "Login", login)
+    default_button(input_frame, 2, 1, "Login", login)
 
     l_page = login_page  # Update global Reference
 
@@ -205,7 +210,7 @@ def open_register_page():
             open_balance_page()
     # Register Button
     style = default_button_style(root)
-    default_button(input_frame, 3, "Register", register)
+    default_button(input_frame, 3, 1, "Register", register)
     
     l_page = register_page  # Update global Reference
 
@@ -229,8 +234,39 @@ def open_balance_page():
     balance_str = get_balance_if() + " €"
     amount_label = tk.Label(input_frame, text=balance_str, bg=color_space_gray, fg=color_text_gray, font=("Helvetica", 40))
     amount_label.grid(row=0, column=0, sticky="e", pady=(50,50), padx=(50,50))
+    # Button
+    def show_transactions():
+        open_transactions_page()
+    style = default_button_style(root)
+    default_button(input_frame, 1, 0, "Show Transaction History", show_transactions)
 
     l_page = balance_page  # Update global Reference
+
+
+def open_transactions_page():
+    global l_page
+    l_page.destroy()  # Remove current Left Page
+
+    transactions_page = tk.Frame(main_frame, bg=color_gray, width=l_page_width)
+    transactions_page.grid(row=0, column=0, sticky="nsew")
+    transactions_page.grid_propagate(False)
+
+    insert_title_image(transactions_page)
+
+    input_frame = tk.Frame(transactions_page, bg=color_space_gray, relief="ridge", borderwidth=10)
+    input_frame.place(relx=0.5, rely=0.5, anchor="center")
+    input_frame.pack_propagate(False)
+    # Amount
+    balance_str = test_transactions_string
+    amount_label = tk.Label(input_frame, text=balance_str, bg=color_space_gray, fg=color_text_gray, font=("Helvetica", 24))
+    amount_label.grid(row=0, column=0, sticky="e", pady=(50,50), padx=(50,50))
+    # Button
+    def show_balance():
+        open_balance_page()
+    style = default_button_style(root)
+    default_button(input_frame, 1, 0, "Show Balance", show_balance)
+
+    l_page = transactions_page  # Update global Reference
 
 
 def open_deposit_page():
@@ -258,7 +294,7 @@ def open_deposit_page():
         deposit_if(amount_entry.get())
         amount_entry.delete(0, tk.END)
     style = default_button_style(root)
-    default_button(input_frame, 1, "Deposit", deposit)
+    default_button(input_frame, 1, 1, "Deposit", deposit)
 
     l_page = deposit_page  # Update global Reference
 
@@ -288,7 +324,7 @@ def open_withdrawal_page():
         withdrawal_if(amount_entry.get())
         amount_entry.delete(0, tk.END)
     style = default_button_style(root)
-    default_button(input_frame, 1, "Withdraw", withdrawal)
+    default_button(input_frame, 1, 1, "Withdraw", withdrawal)
 
     l_page = withdrawal_page  # Update global Reference
 
@@ -330,7 +366,7 @@ def open_transfer_page():
         amount_entry.delete(0, tk.END)
         ref_entry.delete(0, tk.END)
     style = default_button_style(root)
-    default_button(input_frame, 3, "Transfer", transfer)
+    default_button(input_frame, 3, 1, "Transfer", transfer)
     
     l_page = transfer_page  # Update global Reference
 
