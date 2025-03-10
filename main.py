@@ -1,5 +1,5 @@
 from code.gui import start_snapf_nang
-import code.backend
+from code.backend import 
 
 def main():
     start_snapf_nang()
