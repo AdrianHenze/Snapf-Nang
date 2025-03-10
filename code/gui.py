@@ -264,7 +264,11 @@ def open_transactions_page():
     v_scroll.grid(row=0, column=1, sticky="ns")
     canvas.configure(yscrollcommand=v_scroll.set)
     input_frame = tk.Frame(canvas, bg=color_space_gray, relief="ridge", borderwidth=10)
-    canvas.create_window((0,0), window=input_frame, anchor="nw")
+    window_id = canvas.create_window((0,0), window=input_frame, anchor="center")
+    def on_canvas_configure(event):
+        canvas.coords(window_id, event.width/2, event.height/2)
+        canvas.configure(scrollregion=canvas.bbox("all"))
+    canvas.bind("<Configure>", on_canvas_configure)
     def on_frame_configure(event):
         canvas.configure(scrollregion=canvas.bbox("all"))
     input_frame.bind("<Configure>", on_frame_configure)
