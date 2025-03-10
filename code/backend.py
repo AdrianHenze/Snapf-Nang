@@ -57,12 +57,12 @@ def logout():
 
 
 def ueberweisung(ziel_inhaber, betrag):
+    if konten[aktiver_nutzer]["kontostand"] < betrag:
+        return -1  # nicht genügend Guthaben
     if ziel_inhaber not in konten:
         konten[aktiver_nutzer]["kontostand"] -=  betrag
         transaktionen(aktiver_nutzer, "Abbuchung", betrag)
         return 0
-    if konten[aktiver_nutzer]["kontostand"] < betrag:
-        return -1  # nicht genügend Guthaben
     konten[aktiver_nutzer]["kontostand"] -= betrag
     konten[ziel_inhaber]["kontostand"] += betrag
     transaktionen(aktiver_nutzer, "Überweisung gesendet", betrag, ziel=ziel_inhaber)
