@@ -163,7 +163,14 @@ def open_login_page():
     pw_entry.grid(row=1, column=1, sticky="w", pady=(10,10), padx=(10,50))
     # Login
     def login():
-        if is_valid_login(name_entry.get(), pw_entry.get()):
+        rc = is_valid_login(name_entry.get(), pw_entry.get())
+        if rc == -1:
+            print("ERROR: Not an account.")
+        elif rc == -2:
+            print("ERROR: Wrong password.")
+        elif rc == -3:
+            print("ERROR: Missing information.")
+        else:
             build_right_navigation()
             open_balance_page()
     # Login Button
