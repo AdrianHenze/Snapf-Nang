@@ -60,7 +60,7 @@ def deposit_if(amount):
             print("❌ DEPOSIT AMOUNT INVALID.")
             return
         einzahlen(amount)
-        print(f"✅ Deposit of {amount} € successful.")
+        print(f"✅ Deposit of {amount:.2f} € successful.")
     else:
         print("❌ DEPOSIT AMOUNT MISSING.")
 
@@ -81,7 +81,7 @@ def withdrawal_if(amount):
         if rc == -1:
             print("❌ WITHDRAWAL DENIED: Not enough money in the bank.")
         else:
-            print(f"✅ Withdrawal of {amount} € successful.")
+            print(f"✅ Withdrawal of {amount:.2f} € successful.")
     else:
         print("❌ WITHDRAWAL AMOUNT MISSING.")
 
@@ -102,7 +102,7 @@ def transfer_if(name, amount, ref):
         if rc == -1:
             print("❌ TRANSFER DENIED: Not enough money in the bank.")
         else:
-            print(f"✅ Transfer of {amount} € to {name} successful.")
+            print(f"✅ Transfer of {amount:.2f} € to {name} successful.")
             if ref:
                 print(f"> Reference: {ref}")
     else:
