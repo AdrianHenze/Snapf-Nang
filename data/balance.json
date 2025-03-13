@@ -1,0 +1,46 @@
+{
+    "snapf": {
+        "passwort": "asdf",
+        "kontostand": 220.0,
+        "transaktionen": [
+            {
+                "typ": "\u00dcberweisung empfangen",
+                "betrag": 120.0,
+                "datum": "13/03/2025, 20:28:54",
+                "quelle": "adian"
+            },
+            {
+                "typ": "Abhebung",
+                "betrag": 20.0,
+                "datum": "13/03/2025, 20:28:17"
+            },
+            {
+                "typ": "Einzahlung",
+                "betrag": 120.0,
+                "datum": "13/03/2025, 20:28:04"
+            }
+        ]
+    },
+    "adian": {
+        "passwort": "1234",
+        "kontostand": 50.0,
+        "transaktionen": [
+            {
+                "typ": "\u00dcberweisung gesendet",
+                "betrag": 120.0,
+                "datum": "13/03/2025, 20:28:54",
+                "ziel": "snapf"
+            },
+            {
+                "typ": "Abhebung",
+                "betrag": 30.0,
+                "datum": "13/03/2025, 20:28:41"
+            },
+            {
+                "typ": "Einzahlung",
+                "betrag": 200.0,
+                "datum": "13/03/2025, 20:28:35"
+            }
+        ]
+    }
+}

@@ -1,7 +1,28 @@
 from datetime import datetime
+import json
+import os
 
-konten = {}
+
 aktiver_nutzer = None
+DATABASE_FILENAME = "data/balance.json"
+
+def load_database():
+    if os.path.exists(DATABASE_FILENAME):
+        with open(DATABASE_FILENAME, "r") as file:
+            try:
+                return json.load(file)
+            except json.JSONDecodeError:
+                return {}
+    return {}
+
+
+def save_database(data):
+    with open(DATABASE_FILENAME,"w") as file:
+        json.dump(data, file, indent=4)
+
+
+konten = load_database()
+
 
 def konto_erstellen(inhaber, passwort):
     global aktiver_nutzer
@@ -30,6 +51,7 @@ def transaktionen(nutzer, typ, betrag, **zusatzinfos):
 def einzahlen(betrag):
     konten[aktiver_nutzer]["kontostand"] += betrag
     transaktionen(aktiver_nutzer, "Einzahlung", betrag)
+    save_database(konten)
 
 
 def abheben(betrag):
@@ -37,6 +59,7 @@ def abheben(betrag):
         return -1  # nicht genügend Guthaben
     konten[aktiver_nutzer]["kontostand"] -=  betrag
     transaktionen(aktiver_nutzer, "Abhebung", betrag)
+    save_database(konten)
     return 0
 
 
@@ -66,6 +89,7 @@ def ueberweisung(ziel_inhaber, betrag):
     konten[ziel_inhaber]["kontostand"] += betrag
     transaktionen(aktiver_nutzer, "Überweisung gesendet", betrag, ziel=ziel_inhaber)
     transaktionen(ziel_inhaber, "Überweisung empfangen", betrag, quelle=aktiver_nutzer)
+    save_database(konten)
     return 0
 
 
