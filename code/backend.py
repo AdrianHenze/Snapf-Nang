@@ -53,7 +53,7 @@ def transaktionen(nutzer, typ, betrag, ref="", modus="ueberweisung", **zusatzinf
 
 def einzahlen(betrag):
     konten[aktiver_nutzer]["kontostand"] += betrag
-    transaktionen(aktiver_nutzer, "Einzahlung", betrag, modus="einzahlung")
+    transaktionen(aktiver_nutzer, "Deposit", betrag, modus="einzahlung")
     save_database(konten)
 
 
@@ -61,7 +61,7 @@ def abheben(betrag):
     if konten[aktiver_nutzer]["kontostand"] < betrag:
         return -1  # nicht genügend Guthaben
     konten[aktiver_nutzer]["kontostand"] -=  betrag
-    transaktionen(aktiver_nutzer, "Abhebung", betrag, modus="abheben")
+    transaktionen(aktiver_nutzer, "Withdrawal", betrag, modus="abheben")
     save_database(konten)
     return 0
 
@@ -88,13 +88,13 @@ def ueberweisung(ziel_inhaber, betrag, ref):
         return -1  # nicht genügend Guthaben
     if ziel_inhaber not in konten:
         konten[aktiver_nutzer]["kontostand"] -=  betrag
-        transaktionen(aktiver_nutzer, "Überweisung gesendet", betrag, ref=ref)
+        transaktionen(aktiver_nutzer, "Transfer Sent", betrag, ref=ref)
         save_database(konten)
         return 0
     konten[aktiver_nutzer]["kontostand"] -= betrag
     konten[ziel_inhaber]["kontostand"] += betrag
-    transaktionen(aktiver_nutzer, "Überweisung gesendet", betrag, ziel=ziel_inhaber, ref=ref)
-    transaktionen(ziel_inhaber, "Überweisung empfangen", betrag, quelle=aktiver_nutzer, ref=ref)
+    transaktionen(aktiver_nutzer, "Transfer Sent", betrag, ziel=ziel_inhaber, ref=ref)
+    transaktionen(ziel_inhaber, "Transfer Received", betrag, quelle=aktiver_nutzer, ref=ref)
     save_database(konten)
     return 0
 
