@@ -86,7 +86,7 @@ def ueberweisung(ziel_inhaber, betrag, ref):
         return -1  # nicht genügend Guthaben
     if ziel_inhaber not in konten:
         konten[aktiver_nutzer]["kontostand"] -=  betrag
-        transaktionen(aktiver_nutzer, "Überweisung gesendet", betrag)
+        transaktionen(aktiver_nutzer, "Überweisung gesendet", betrag, ref=ref)
         save_database(konten)
         return 0
     konten[aktiver_nutzer]["kontostand"] -= betrag
