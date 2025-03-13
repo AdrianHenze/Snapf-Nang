@@ -340,9 +340,17 @@ def open_deposit_page():
     amount_label.grid(row=0, column=0, sticky="e", pady=(50,10), padx=(50,10))
     amount_entry = tk.Entry(input_frame, bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
     amount_entry.grid(row=0, column=1, sticky="w", pady=(50,10), padx=(10,50))
+    # Error Label
+    error_text = error_label(input_frame, 1, 0, text="")
     # Button
     def deposit():
-        deposit_if(amount_entry.get())
+        rc = deposit_if(amount_entry.get())
+        if rc == -1:
+            error_text.config(text="Amount too big.")
+        elif rc == -2:
+            error_text.config(text="Amount invalid.")
+        elif rc == -3:
+            error_text.config(text="Amount missing.")
         amount_entry.delete(0, tk.END)
     style = default_button_style(root)
     default_button(input_frame, 1, 1, "Deposit", deposit)
@@ -370,9 +378,19 @@ def open_withdrawal_page():
     amount_label.grid(row=0, column=0, sticky="e", pady=(50,10), padx=(50,10))
     amount_entry = tk.Entry(input_frame, bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
     amount_entry.grid(row=0, column=1, sticky="w", pady=(50,10), padx=(10,50))
+    # Error Label
+    error_text = error_label(input_frame, 1, 0, text="")
     # Button
     def withdrawal():
-        withdrawal_if(amount_entry.get())
+        rc = withdrawal_if(amount_entry.get())
+        if rc == -1:
+            error_text.config(text="Amount too big.")
+        elif rc == -2:
+            error_text.config(text="Amount invalid.")
+        elif rc == -3:
+            error_text.config(text="Not enough money in the bank.")
+        elif rc == -4:
+            error_text.config(text="Amount missing.")
         amount_entry.delete(0, tk.END)
     style = default_button_style(root)
     default_button(input_frame, 1, 1, "Withdraw", withdrawal)
@@ -410,9 +428,19 @@ def open_transfer_page():
     ref_label.grid(row=2, column=0, sticky="e", pady=(10,10), padx=(50,10))
     ref_entry = tk.Entry(input_frame, bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
     ref_entry.grid(row=2, column=1, sticky="w", pady=(10,10), padx=(10,50))
+    # Error Label
+    error_text = error_label(input_frame, 3, 0, text="")
     # Button
     def transfer():
-        transfer_if(rec_entry.get(), amount_entry.get(), ref_entry.get())
+        rc = transfer_if(rec_entry.get(), amount_entry.get(), ref_entry.get())
+        if rc == -1:
+            error_text.config(text="Amount too big.")
+        elif rc == -2:
+            error_text.config(text="Amount invalid.")
+        elif rc == -3:
+            error_text.config(text="Not enough money in the bank.")
+        elif rc == -4:
+            error_text.config(text="Information missing.")
         rec_entry.delete(0, tk.END)
         amount_entry.delete(0, tk.END)
         ref_entry.delete(0, tk.END)

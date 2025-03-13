@@ -56,14 +56,16 @@ def deposit_if(amount):
                 raise ValueError
             elif amount > 999999999999:
                 print("❌ DEPOSIT AMOUNT TOO BIG.")
-                return
+                return -1
         except ValueError:
             print("❌ DEPOSIT AMOUNT INVALID.")
-            return
+            return -2
         einzahlen(amount)
         print(f"✅ Deposit of {amount:.2f} € successful.")
+        return 0
     else:
         print("❌ DEPOSIT AMOUNT MISSING.")
+        return -3
 
 
 def withdrawal_if(amount):
@@ -74,17 +76,20 @@ def withdrawal_if(amount):
                 raise ValueError
             elif amount > 999999999999:
                 print("❌ WITHDRAWAL AMOUNT TOO BIG.")
-                return
+                return -1
         except ValueError:
             print("❌ WITHDRAWAL AMOUNT INVALID.")
-            return
+            return -2
         rc = abheben(amount)
         if rc == -1:
             print("❌ WITHDRAWAL DENIED: Not enough money in the bank.")
+            return -3
         else:
             print(f"✅ Withdrawal of {amount:.2f} € successful.")
+            return 0
     else:
         print("❌ WITHDRAWAL AMOUNT MISSING.")
+        return -4
 
 
 def transfer_if(name, amount, ref):
@@ -95,19 +100,22 @@ def transfer_if(name, amount, ref):
                 raise ValueError
             elif amount > 999999999999:
                 print("❌ TRANSFER AMOUNT TOO BIG.")
-                return
+                return -1
         except ValueError:
             print("❌ TRANSFER AMOUNT INVALID.")
-            return
+            return -2
         rc = ueberweisung(name, amount, ref)
         if rc == -1:
             print("❌ TRANSFER DENIED: Not enough money in the bank.")
+            return -3
         else:
             print(f"✅ Transfer of {amount:.2f} € to {name} successful.")
             if ref:
                 print(f"> Reference: {ref}")
+            return 0
     else:
         print("❌ TRANSFER INFORMATION MISSING.")
+        return -4
 
 
 def logout_if():
