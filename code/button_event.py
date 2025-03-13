@@ -22,18 +22,19 @@ def is_valid_registration(name, passw, year):
                 raise ValueError
         except ValueError:
             print("❌ REGISTRATION FAILED: Year of Birth invalid.")
-            return False
+            return -1
         if y > current_year-18:
             print("❌ REGISTRATION FAILED: You are too young.")
-            return False
+            return -2
         rc = konto_erstellen(name, passw)
         if rc == -1:
             print("❌ REGISTRATION FAILED: Name is already in use.")
-            return False
+            return -3
         print("✅ Registration successful.")
-        return True
+        return 0
     else:
         print("❌ REGISTRATION FAILED: All entries mandatory.")
+        return -4
 
 
 def get_balance_if():

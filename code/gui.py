@@ -85,6 +85,12 @@ def nav_button(frame, row, col, text, command):
         nav_buttons[text] = b
 
 
+def error_label(frame, row, col, text):
+    label = tk.Label(frame, text=text, bg=color_space_gray, fg=color_red, font=("Helvetica", 12))
+    label.grid(row=row, column=col, sticky="e", pady=(10,10), padx=(50,10))
+    return label
+
+
 def build_right_login_registration():
     global r_page
     nav_buttons.clear()
@@ -159,15 +165,20 @@ def open_login_page():
     pw_label.grid(row=1, column=0, sticky="e", pady=(10,10), padx=(50,10))
     pw_entry = tk.Entry(input_frame, show="*", bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
     pw_entry.grid(row=1, column=1, sticky="w", pady=(10,10), padx=(10,50))
+    # Error Label
+    error_text = error_label(input_frame, 2, 0, text="")
     # Login
     def login():
         rc = is_valid_login(name_entry.get(), pw_entry.get())
         if rc == -1:
             print("ERROR: Not an account.")
+            error_text.config(text="Not an account.")
         elif rc == -2:
             print("ERROR: Wrong password.")
+            error_text.config(text="Wrong password.")
         elif rc == -3:
             print("ERROR: Missing information.")
+            error_text.config(text="Missing information.")
         else:
             build_right_navigation()
             open_balance_page()
@@ -208,9 +219,20 @@ def open_register_page():
     year_label.grid(row=2, column=0, sticky="e", pady=(10,10), padx=(50,10))
     year_entry = tk.Entry(input_frame, bg=color_textfield_gray, fg=color_white, font=("Helvetica", 24))
     year_entry.grid(row=2, column=1, sticky="w", pady=(10,10), padx=(10,50))
+    # Error Label
+    error_text = error_label(input_frame, 3, 0, text="")
     # Register
     def register():
-        if is_valid_registration(name_entry.get(),pw_entry.get(),year_entry.get()):
+        rc = is_valid_registration(name_entry.get(),pw_entry.get(),year_entry.get())
+        if rc == -1:
+            error_text.config(text="Year of Birth invalid.")
+        elif rc == -2:
+            error_text.config(text="You are too young.")
+        elif rc == -3:
+            error_text.config(text="Name is already in use.")
+        elif rc == -4:
+            error_text.config(text="All entries mandatory.")
+        else:
             build_right_navigation()
             open_balance_page()
     # Register Button
