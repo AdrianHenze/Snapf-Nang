@@ -38,7 +38,7 @@ def konto_erstellen(inhaber, passwort):
     return 0
 
 
-def transaktionen(nutzer, typ, betrag, ref=None, modus="ueberweisung", **zusatzinfos):
+def transaktionen(nutzer, typ, betrag, ref="", modus="ueberweisung", **zusatzinfos):
     datum = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
     transaktion = {
         "typ": typ,
@@ -106,7 +106,9 @@ def get_kontoauszug():
     for transaktion in konten[aktiver_nutzer]["transaktionen"]:
         typ = transaktion["typ"]
         datum = transaktion["datum"]
-        ref = transaktion["ref"]
         formatted_betrag = f"{transaktion['betrag']:.2f}".replace('.', ',')
-        auszug += f"{datum} | {typ} | {formatted_betrag} € | {ref}\n"
+        if "ref" in transaktion:
+            auszug += f"{datum} | {typ} | {formatted_betrag} € | {ref}\n"
+        else:
+            auszug += f"{datum} | {typ} | {formatted_betrag} €\n"
     return auszug
