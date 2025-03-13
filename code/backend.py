@@ -38,20 +38,22 @@ def konto_erstellen(inhaber, passwort):
     return 0
 
 
-def transaktionen(nutzer, typ, betrag, **zusatzinfos):
+def transaktionen(nutzer, typ, betrag, ref=None, modus="ueberweisung", **zusatzinfos):
     datum = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
     transaktion = {
         "typ": typ,
         "betrag": betrag,
-        "datum": datum
+        "datum": datum,
     }
+    if modus == "ueberweisung":
+        transaktion["ref"] = ref
     transaktion.update(zusatzinfos)
     konten[nutzer]["transaktionen"].insert(0,transaktion)
 
 
 def einzahlen(betrag):
     konten[aktiver_nutzer]["kontostand"] += betrag
-    transaktionen(aktiver_nutzer, "Einzahlung", betrag)
+    transaktionen(aktiver_nutzer, "Einzahlung", betrag, modus="einzahlung")
     save_database(konten)
 
 
@@ -59,7 +61,7 @@ def abheben(betrag):
     if konten[aktiver_nutzer]["kontostand"] < betrag:
         return -1  # nicht genügend Guthaben
     konten[aktiver_nutzer]["kontostand"] -=  betrag
-    transaktionen(aktiver_nutzer, "Abhebung", betrag)
+    transaktionen(aktiver_nutzer, "Abhebung", betrag, modus="abheben")
     save_database(konten)
     return 0
 
@@ -84,7 +86,7 @@ def ueberweisung(ziel_inhaber, betrag, ref):
         return -1  # nicht genügend Guthaben
     if ziel_inhaber not in konten:
         konten[aktiver_nutzer]["kontostand"] -=  betrag
-        transaktionen(aktiver_nutzer, "Abbuchung", betrag)
+        transaktionen(aktiver_nutzer, "Überweisung gesendet", betrag)
         save_database(konten)
         return 0
     konten[aktiver_nutzer]["kontostand"] -= betrag
@@ -104,6 +106,7 @@ def get_kontoauszug():
     for transaktion in konten[aktiver_nutzer]["transaktionen"]:
         typ = transaktion["typ"]
         datum = transaktion["datum"]
+        ref = transaktion["ref"]
         formatted_betrag = f"{transaktion['betrag']:.2f}".replace('.', ',')
-        auszug += f"{datum} | {typ} | {formatted_betrag} €\n"
+        auszug += f"{datum} | {typ} | {formatted_betrag} € | {ref}\n"
     return auszug
