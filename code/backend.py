@@ -85,6 +85,7 @@ def ueberweisung(ziel_inhaber, betrag, ref):
     if ziel_inhaber not in konten:
         konten[aktiver_nutzer]["kontostand"] -=  betrag
         transaktionen(aktiver_nutzer, "Abbuchung", betrag)
+        save_database(konten)
         return 0
     konten[aktiver_nutzer]["kontostand"] -= betrag
     konten[ziel_inhaber]["kontostand"] += betrag
