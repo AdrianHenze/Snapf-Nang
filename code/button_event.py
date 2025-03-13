@@ -108,6 +108,9 @@ def transfer_if(name, amount, ref):
         if rc == -1:
             print("❌ TRANSFER DENIED: Not enough money in the bank.")
             return -3
+        elif rc == -2:
+            print("❌ TRANSFER DENIED: Invalid recipient.")
+            return -4
         else:
             print(f"✅ Transfer of {amount:.2f} € to {name} successful.")
             if ref:
@@ -115,7 +118,7 @@ def transfer_if(name, amount, ref):
             return 0
     else:
         print("❌ TRANSFER INFORMATION MISSING.")
-        return -4
+        return -5
 
 
 def logout_if():

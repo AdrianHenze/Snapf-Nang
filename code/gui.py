@@ -440,6 +440,8 @@ def open_transfer_page():
         elif rc == -3:
             error_text.config(text="Not enough money in the bank.")
         elif rc == -4:
+            error_text.config(text="Invalid recipient.")
+        elif rc == -5:
             error_text.config(text="Information missing.")
         rec_entry.delete(0, tk.END)
         amount_entry.delete(0, tk.END)
