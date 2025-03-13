@@ -34,6 +34,7 @@ def konto_erstellen(inhaber, passwort):
         "transaktionen": []
     }
     aktiver_nutzer = inhaber
+    save_database(konten)
     return 0
 
 
