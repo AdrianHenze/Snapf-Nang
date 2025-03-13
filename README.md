@@ -1,7 +1,5 @@
 # 💸 Snapf-Nang Bank
 
-# Clingonia by MadMotion
-
 ![Login Page](data/img/SnapfNang.png)
 
 ## 🌹 Introduction
