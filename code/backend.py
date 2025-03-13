@@ -78,7 +78,7 @@ def logout():
     aktiver_nutzer = None
 
 
-def ueberweisung(ziel_inhaber, betrag):
+def ueberweisung(ziel_inhaber, betrag, ref):
     if konten[aktiver_nutzer]["kontostand"] < betrag:
         return -1  # nicht genügend Guthaben
     if ziel_inhaber not in konten:
@@ -87,8 +87,8 @@ def ueberweisung(ziel_inhaber, betrag):
         return 0
     konten[aktiver_nutzer]["kontostand"] -= betrag
     konten[ziel_inhaber]["kontostand"] += betrag
-    transaktionen(aktiver_nutzer, "Überweisung gesendet", betrag, ziel=ziel_inhaber)
-    transaktionen(ziel_inhaber, "Überweisung empfangen", betrag, quelle=aktiver_nutzer)
+    transaktionen(aktiver_nutzer, "Überweisung gesendet", betrag, ziel=ziel_inhaber, ref=ref)
+    transaktionen(ziel_inhaber, "Überweisung empfangen", betrag, quelle=aktiver_nutzer, ref=ref)
     save_database(konten)
     return 0
 

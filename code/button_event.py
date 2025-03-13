@@ -98,7 +98,7 @@ def transfer_if(name, amount, ref):
         except ValueError:
             print("❌ TRANSFER AMOUNT INVALID.")
             return
-        rc = ueberweisung(name, amount)
+        rc = ueberweisung(name, amount, ref)
         if rc == -1:
             print("❌ TRANSFER DENIED: Not enough money in the bank.")
         else:
