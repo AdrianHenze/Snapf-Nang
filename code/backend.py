@@ -108,7 +108,7 @@ def get_kontoauszug():
         datum = transaktion["datum"]
         formatted_betrag = f"{transaktion['betrag']:.2f}".replace('.', ',')
         if "ref" in transaktion:
-            auszug += f"{datum} | {typ} | {formatted_betrag} € | {ref}\n"
+            auszug += f"{datum} | {typ} | {formatted_betrag} € | {transaktion['ref']}\n"
         else:
             auszug += f"{datum} | {typ} | {formatted_betrag} €\n"
     return auszug
