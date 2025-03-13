@@ -82,6 +82,8 @@ def logout():
 
 
 def ueberweisung(ziel_inhaber, betrag, ref):
+    if aktiver_nutzer == ziel_inhaber:
+        return -2
     if konten[aktiver_nutzer]["kontostand"] < betrag:
         return -1  # nicht genügend Guthaben
     if ziel_inhaber not in konten:
